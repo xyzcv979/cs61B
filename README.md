@@ -6,5 +6,5 @@ UC Berkeley's [CS61B 2021 course](https://sp21.datastructur.es/)
 - [Notes](notes)
 - [Discussions](discussions)
 
-Todo: 
+Todo: project 0, disc 2, exam prep, lab 2, 02/01
 

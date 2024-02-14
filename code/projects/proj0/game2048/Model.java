@@ -110,16 +110,103 @@ public class Model extends Observable {
         boolean changed;
         changed = false;
 
-        // TODO: Modify this.board (and perhaps this.score) to account
+        // TODO 4: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+
+        /**
+         * Focus on UP direction
+         * starting from top row down
+         * first tile is moved all the way up
+         * conditions:
+         *  1. Only 1 tile
+         *      1.1 if tile not at top square, move it
+         *  2. 2 tiles
+         *      2.1 same value
+         *      2.2 diff value
+         *  3. 3 tiles
+         *      3.1 top 2 are same values
+         *      3.2 bottom 2 are same values
+         *      3.3 all different values
+         *  4. 4 tiles
+         *      4.1 top 2 are same
+         *      4.2 mid 2 are same
+         *      4.3 bottom 2 are same
+         *      4.4 all diff values
+         *
+         *
+         * for every column
+         * for every row
+         * move number square to top most valid square. Either combine or move to one below or it stays in position
+         * */
+        board.setViewingPerspective(side);
+        int sz = board.size();
+        for (int i = 0; i < sz; i++) {
+            if (processColumnForTilt(i)) {
+                changed = true;
+            }
+        }
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
+        board.setViewingPerspective(Side.NORTH);
         return changed;
     }
+
+    private boolean processColumnForTilt(int col) {
+        int sz = board.size();
+        boolean changed = false;
+        int topAvailSpot = sz-1; // top square in column
+        for (int row = sz-1; row >= 0; row--) {
+//            Tile t = board.tile(i, j);
+//            if (t != null) {
+//                board.move(i, 1, t);
+//                changed = true;
+//                score += 7;
+//            }
+            int result = processSquare(col, row, topAvailSpot);
+            if (result == -1) { // empty current tile
+                continue;
+            }
+            topAvailSpot = result;
+            changed = true;
+        }
+        return changed;
+    }
+
+    private int processSquare(int col, int row, int topAvailSpot) {
+        if (topAvailSpot == row) {
+            return -1;
+        }
+        Tile topTile = board.tile(col, topAvailSpot);
+        Tile currTile = board.tile(col, row);
+        if (currTile == null) {
+            return -1;
+        }
+        if (topTile == null) {
+            board.move(col, topAvailSpot, currTile); // still valid for merging
+        }
+        else if (topTile.value() == currTile.value()) {
+            // same values, so merge them into 1 square
+            score += (currTile.value()*2);
+            board.move(col, topAvailSpot, currTile);
+            topAvailSpot--; // marks as no longer valid for merging
+
+        } else {
+            // move to next avail spot. (1 before topAvailSpot)
+            // or stays in position
+            // This becomes new topAvailSpot
+            topAvailSpot--; // Since the values aren't the same, this square goes to one below.
+            if (row != topAvailSpot) { // only move if topAvailSpot is different from current spot
+                board.move(col, topAvailSpot, currTile);
+            }
+        }
+        return topAvailSpot;
+    }
+
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -137,7 +224,15 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
+        // TODO 1: Fill in this function.
+        int sz = b.size();
+        for (int i = 0; i < sz; i++) {
+            for (int j = 0; j < sz; j++) {
+                if (b.tile(i,j) == null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -147,7 +242,15 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
+        // TODO 2: Fill in this function.
+        int sz = b.size();
+        for (int i = 0; i < sz; i++) {
+            for (int j = 0; j < sz; j++) {
+                if (b.tile(i,j) != null && b.tile(i,j).value() == MAX_PIECE) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -158,7 +261,31 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        // TODO 3: Fill in this function.
+        if (emptySpaceExists(b) || sameValueAdjacentTiles(b)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * atLeastOneMoveExists helper function
+     * Returns true if 2 adjacent tiles have the same value
+     * */
+    private static boolean sameValueAdjacentTiles(Board b) {
+        int sz = b.size();
+        for (int i = 1; i < sz; i++) {
+            for (int j = 1; j < sz; j++) {
+                // Check on same row
+                if (b.tile(i,j) != null && b.tile(i-1, j) != null && b.tile(i,j).value() == b.tile(i-1,j).value()) {
+                    return true;
+                }
+                // Check on same column
+                if (b.tile(i,j) != null && b.tile(i, j-1) != null && b.tile(i,j).value() == b.tile(i,j-1).value()) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

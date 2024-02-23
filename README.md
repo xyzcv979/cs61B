@@ -9,5 +9,5 @@ UC Berkeley's [CS61B 2021 course](https://sp21.datastructur.es/)
 ### Setup
 - [Setup CS61B Java Libraries for labs/projects](https://sp21.datastructur.es/materials/lab/lab2setup/lab2setup)
   
-Todo: project 1, 02/12, disc 4, exam prep 4, lab 4
+Todo: project 1, disc 4, exam prep 4, lab 4
 

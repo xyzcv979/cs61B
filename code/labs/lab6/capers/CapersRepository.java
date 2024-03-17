@@ -1,6 +1,8 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
+
 import static capers.Utils.*;
 
 /** A repository for Capers 
@@ -18,7 +20,7 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
+    static final File CAPERS_FOLDER = Utils.join(".capers", ""); // TODO Hint: look at the `join`
                                             //      function in Utils
 
     /**
@@ -31,7 +33,25 @@ public class CapersRepository {
      *    - story -- file containing the current story
      */
     public static void setupPersistence() {
-        // TODO
+        File d = CAPERS_FOLDER;
+        if (!d.exists()) {
+            d.mkdir();
+        }
+
+        try {
+            d = Dog.DOG_FOLDER;
+            if (!d.exists()){
+                d.mkdir();
+            }
+
+            File f = Utils.join(CAPERS_FOLDER, "story");
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -40,7 +60,13 @@ public class CapersRepository {
      * @param text String of the text to be appended to the story
      */
     public static void writeStory(String text) {
-        // TODO
+        File f = Utils.join(CAPERS_FOLDER, "story");
+        String prevContent = Utils.readContentsAsString(f);
+        // The file has blank line as the last line. Need to remove it and add it back for every new line
+        if (!prevContent.isEmpty()) {
+            prevContent = prevContent.substring(0, prevContent.length()-1);
+        }
+        Utils.writeContents(f, prevContent, text, "\n", "\n");
     }
 
     /**
@@ -49,7 +75,9 @@ public class CapersRepository {
      * Also prints out the dog's information using toString().
      */
     public static void makeDog(String name, String breed, int age) {
-        // TODO
+        Dog d = new Dog(name, breed, age);
+        d.saveDog();
+        System.out.println(d.toString());
     }
 
     /**
@@ -59,6 +87,8 @@ public class CapersRepository {
      * @param name String name of the Dog whose birthday we're celebrating.
      */
     public static void celebrateBirthday(String name) {
-        // TODO
+        Dog oldDog = Dog.fromFile(name);
+        oldDog.haveBirthday();
+        oldDog.saveDog();
     }
 }

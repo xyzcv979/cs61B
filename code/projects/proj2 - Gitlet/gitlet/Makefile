@@ -55,7 +55,8 @@ integration:
 
 # 'make clean' will clean up stuff you can reconstruct.
 clean:
-	$(RM) *~ *.class sentinel
+	$(RM) *~ sentinel
+	find . -name '*.class' -type f -delete
 
 ### DEPENDENCIES ###
 

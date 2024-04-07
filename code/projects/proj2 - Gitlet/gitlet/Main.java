@@ -28,6 +28,8 @@ public class Main {
         switch(firstArg) {
             case "init":
                 Repository.init();
+                // Create first commit here?
+                // Create first branch here?
                 break;
             case "add":
                 break;

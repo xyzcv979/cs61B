@@ -2,7 +2,6 @@ package gitlet.objects;
 
 import java.io.Serializable;
 
-import static gitlet.Constants.INITIAL_BRANCH;
 
 /**
  * Represents a Commit tree branch
@@ -16,9 +15,7 @@ public class Branch implements Serializable {
 
     // Initial branch
     public Branch() {
-        name = INITIAL_BRANCH;
-        headPtr = new Commit();
-        latestPtr = headPtr;
+
     }
 
     public Branch(String name, Commit headPtr) {

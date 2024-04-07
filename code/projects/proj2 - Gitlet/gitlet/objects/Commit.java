@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.util.Date; // TODO: You'll likely use this in this class
 import java.util.TreeMap;
 
-import static gitlet.Constants.INITIAL_COMMIT_MSG;
-import static gitlet.Constants.INITIAL_DATE;
 
 /** Represents a gitlet commit object.
  *  TODO: It's a good idea to give a description here of what else this Class
@@ -27,7 +25,7 @@ public class Commit implements Serializable {
     private String secParent;
 
     public Commit() {
-        this(INITIAL_COMMIT_MSG, INITIAL_DATE);
+
     }
 
     public Commit(String msg, Date timestamp) {

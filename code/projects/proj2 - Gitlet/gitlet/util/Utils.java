@@ -1,4 +1,4 @@
-package gitlet;
+package gitlet.util;
 
 import gitlet.exceptions.GitletException;
 
@@ -28,7 +28,7 @@ import java.util.List;
  *
  *  @author P. N. Hilfinger
  */
-class Utils {
+public class Utils {
 
     /** The length of a complete SHA-1 UID as a hexadecimal numeral. */
     static final int UID_LENGTH = 40;
@@ -155,7 +155,7 @@ class Utils {
     }
 
     /** Write OBJ to FILE. */
-    static void writeObject(File file, Serializable obj) {
+    public static void writeObject(File file, Serializable obj) {
         writeContents(file, serialize(obj));
     }
 
@@ -202,7 +202,7 @@ class Utils {
     /** Return the concatentation of FIRST and OTHERS into a File designator,
      *  analogous to the {@link java.nio.file.Paths.#get(String, String[])}
      *  method. */
-    static File join(File first, String... others) {
+    public static File join(File first, String... others) {
         return Paths.get(first.getPath(), others).toFile();
     }
 

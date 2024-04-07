@@ -62,6 +62,29 @@ public class Repository {
     }
 
     /**
-     * Adds a copy of the file to staging area
+     * Adds a copy of the file to staging area.
+     * Staging an already staged file overwrites the previous entry.
+     * If current working file is identical to same file in current commit, do not stage,
+     * and remove from staging area if it's already there
+     * (This happens when file is changed, added, changed back to orig version
      */
+    public static void add(String fileName) {
+        File file = join(CWD, fileName);
+        if (!file.exists()) {
+            System.out.println("File does not exist.");
+            System.exit(0);
+        }
+
+        // Create blob? hash the file
+        // Do i need to store TreeMap as a file too? Saves file name to blob hash reference
+
+        // 1. New file, not in commit
+        // hash it, upload as blob, save to TreeMap the filename and hash object, save to staging area
+
+        // 2. Modified file, file in commit already
+        // hash it, upload as blob, add to TreeMap?, save to staging area
+
+        // 3. File has no change from previous commit's version
+        //
+    }
 }

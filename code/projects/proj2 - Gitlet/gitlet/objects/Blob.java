@@ -11,7 +11,12 @@ public class Blob {
     /**
      *
      */
-    private File filePath;
+    private String filePath;
+
+    /**
+     * (Transient) objects
+     */
+    private transient File file;
 
     public Blob() {
     }

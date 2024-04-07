@@ -32,6 +32,14 @@ public class Main {
                 // Create first branch here?
                 break;
             case "add":
+                if (args.length == 1) {
+                    System.out.println("Please enter a file to be added");
+                    System.exit(0);
+                } else if(args.length > 2) {
+                    System.out.println("You can only add 1 file at a time");
+                    System.exit(0);
+                }
+                Repository.add(args[1]);
                 break;
             case "commit":
                 break;

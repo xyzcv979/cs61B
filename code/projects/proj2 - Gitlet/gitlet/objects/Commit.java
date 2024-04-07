@@ -16,13 +16,20 @@ import java.util.TreeMap;
 public class Commit implements Serializable {
     private String message;
     private Date timestamp;
-    // Mapping of file name to blob references
-    // The blob reference should be the SHA hash
-    TreeMap<String, String> fileToBlobMap;
+
     // SHA Hash of commit for the parent
     private String parentId;
     // Second parent reference for merges
     private String secParent;
+
+    /** (Transient) Redundant pointers to Commit objects for runtime operations
+     * State is not saved when serialized onto a file. Returns as Null when deserialized
+     * */
+    private transient Commit parentCopy;
+    // Mapping of file name to blob references
+    // The blob reference should be the SHA hash
+    private transient TreeMap<String, Blob> fileToBlobMap;
+
 
     public Commit() {
 
